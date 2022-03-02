@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import data from './data';
 import Articolo from './Articolo';
 
-//Funzione che se presente 'Theme' nel localStorage
-// returna il suo valore o di default return 'light-mode'
-
+const getFromLocalStorage = () => {
+  if (localStorage.getItem('Theme')) {
+    return localStorage.getItem('Theme');
+  }
+};
 function App() {
-  // Set default theme
-  const [theme, setTheme] = useState('light-mode');
+  // Set default theme from localStorage
+  const [theme, setTheme] = useState(getFromLocalStorage() || 'light-mode');
   // Function change theme
   const changeTheme = () => {
     if (theme === 'light-mode') {
@@ -19,6 +21,8 @@ function App() {
   //useEffect call function when theme status is updated
   useEffect(() => {
     document.documentElement.className = theme;
+    //save in local storage
+    localStorage.setItem('Theme', theme);
   }, [theme]);
 
   return (
